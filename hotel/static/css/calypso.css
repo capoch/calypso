@@ -1,5 +1,5 @@
 .page-header {
-    background-color: rgba(85, 27, 27, 0.88); margin-top: 0; padding: 20px 20px 20px 40px;
+    margin: 0; padding: 20px 20px 20px 40px; border: 0;
 }
 
 .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
@@ -8,13 +8,16 @@
     text-decoration: none;
 }
 .container-fluid{
-  background-color: rgba(85, 27, 27, 0.88); 
 }
 .navbar {
+  border: 0;
   background: none;
-  background-color: rgba(85, 27, 27, 0.88);
+  border-top-right-radius: 0;
+  border-top-left-radius: 0;
 }
-
+ .page-header, .navbar {
+   background-color: rgba(62, 20, 20, 0.88);
+ }
 
 .background_home {
  margin-left: 0px;
@@ -29,6 +32,10 @@
 .content {
 
     margin-left: 40px;
+}
+.content h1{
+
+  color: rgba(62, 20, 20, 1);
 }
 
 h1, h2, h3, h4 {
@@ -64,4 +71,10 @@ h1, h2, h3, h4 {
 
 .comment {
     margin: 20px 0px 20px 20px;
+}
+
+.room_name {
+  background-color: rgba(62, 20, 20, 0.88);
+  color: #fff
+
 }
