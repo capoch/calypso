@@ -1,0 +1,17 @@
+{% extends 'hotel/base.html' %}
+
+{% block content %}
+
+<h1>Room Types</h1>
+
+{% for RoomType in object_list %}
+    <div class="roomtype">
+        <div class="room_name">
+            <h1>{{ RoomType.name }}</h1>
+        </div>
+        <div class="room_description">
+            {{ RoomType.description }}
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}
