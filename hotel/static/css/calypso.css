@@ -15,7 +15,7 @@
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
- .page-header, .navbar {
+ .page-header, .footer, .navbar {
    background-color: rgba(62, 20, 20, 0.88);
  }
 
@@ -77,4 +77,17 @@ h1, h2, h3, h4 {
   background-color: rgba(62, 20, 20, 0.88);
   color: #fff
 
+}
+
+.footer {
+    margin: 0; padding: 5px 20px 5px 20px; border: 0;
+}
+
+.footer p {
+    text-align: center;
+    line-height: 90%;
+    color: #ffffff;
+    font-size: 10pt;
+    font-family: 'Old Standard TT', serif;
+    text-decoration: none;
 }

@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+    <link href="//fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'css/calypso.css' %}">
 </head>
 
@@ -21,11 +23,19 @@
         <h1><a href="/">Calypso</a></h1>
     </div>
 
-    <div class="content container">
+    <div class="content container-fluid">
         <div class="row">
                 {% block content %} {% endblock %}
         </div>
     </div>
+
+      <footer class="footer">
+          <p>Calypso Resort</p>
+          <p>Danao Beach, Panglao, 6340 Bohol</p>
+          <p>Tel: 09093934393403 Mail:sfasdf</p>
+      </footer>
+    
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 
