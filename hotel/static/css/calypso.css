@@ -8,6 +8,7 @@
     text-decoration: none;
 }
 .container-fluid{
+  margin-bottom:60px;
 }
 .navbar {
   border: 0;
@@ -81,14 +82,15 @@ h1, h2, h3, h4 {
 
 .footer {
     margin: 0; padding: 5px 20px 5px 20px; border: 0;
-    position: absolute;
+    position: fixed;
+    clear: both;
     bottom: 0;
     width: 100%;
 }
 
 .footer p {
     text-align: center;
-    line-height: 90%;
+    margin: 0;
     color: #ffffff;
     font-size: 10pt;
     font-family: 'Old Standard TT', serif;
