@@ -8,7 +8,6 @@
     text-decoration: none;
 }
 .container-fluid{
-  margin-bottom:60px;
 }
 .navbar {
   border: 0;
@@ -25,6 +24,9 @@
 
 }
 
+.homescreen {
+  margin-bottom: 5px;
+}
 
 .thehoff {
   float: right;
