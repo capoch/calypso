@@ -9,7 +9,8 @@ from django.template import Context
 def home(request):
     return render_to_response('hotel/home.html')
 
-
+def about(request):
+    return render_to_response('hotel/about.html')
 
 class ListRoomsView(ListView):
 

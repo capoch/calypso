@@ -1,6 +1,5 @@
 {% extends 'hotel/base.html' %}
-
-{% block title %}Contact - {{ block.super }}{% endblock %}
+{% load staticfiles %}
 
 {% block content %}
 <nav class="navbar navbar-default">
@@ -8,17 +7,15 @@
     <ul class="nav navbar-nav">
       <li><a href="{% url 'home' %}">Home</a></li>
       <li><a href="{% url 'rooms' %}">Rooms</a></li>
-      <li class="active"><a href="{% url 'contact' %}">Contact</a></li>
-      <li><a href="{% url 'about' %}">About</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li class="active"><a href="{% url 'about' %}">About</a></li>
     </ul>
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
-<h1>Contact</h1>
-<form role="form" action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+    <div class="homescreen">
+      <h1> Helloooooo </h1>
+    </div>
 </div>
+
 {% endblock %}
