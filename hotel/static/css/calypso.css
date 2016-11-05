@@ -41,8 +41,12 @@
   color: rgba(62, 20, 20, 1);
 }
 
-h1, h2, h3, h4 {
-    font-family: 'Tangerine', cursive;
+h1 {
+    font-family: 'Raleway', cursive;
+}
+
+h2, h3, h4 {
+    font-family: 'Raleway', cursive;
 }
 
 .date {

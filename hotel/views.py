@@ -12,6 +12,9 @@ def home(request):
 def about(request):
     return render_to_response('hotel/about.html')
 
+def service(request):
+    return render_to_response('hotel/service.html')
+
 class ListRoomsView(ListView):
 
     model = RoomType
@@ -52,6 +55,7 @@ def contact(request):
                 headers = {'Reply-To': contact_email }
             )
             email.send()
+
             return redirect('contact')
 
     return render(request, 'hotel/contact.html', {

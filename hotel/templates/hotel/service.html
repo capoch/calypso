@@ -1,0 +1,20 @@
+{% extends 'hotel/base.html' %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+      <li class="active"><a href="{% url 'service' %}">Service</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'about' %}">About</a></li>
+    </ul>
+  </div>
+</nav>
+<h2>Calypso offers the following services for his beloved guests:</h2>
+<div class="col-md-4">.col-md-4</div>
+<div class="col-md-4">.col-md-4</div>
+<div class="col-md-4">.col-md-4</div>
+
+{% endblock %}
