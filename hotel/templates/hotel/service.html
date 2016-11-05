@@ -1,4 +1,6 @@
 {% extends 'hotel/base.html' %}
+{% load staticfiles %}
+
 
 {% block content %}
 <nav class="navbar navbar-default">
@@ -12,9 +14,26 @@
     </ul>
   </div>
 </nav>
-<h2>Calypso offers the following services for his beloved guests:</h2>
-<div class="col-md-4">.col-md-4</div>
-<div class="col-md-4">.col-md-4</div>
-<div class="col-md-4">.col-md-4</div>
+<h3>Calypso offers the following services for his beloved guests:</h3>
+<div class="col-md-4">
+  <div class="container-fluid">
+    <img src="{% static 'images/hotel/motorbike.png' %}" height="40" class="img-responsive">
+    <p>Free Motorbike included with every room</p>
+    <img src="{% static 'images/hotel/restaurant.png' %}" height="40" class="img-responsive">
+    <p>European/Filipino Restaurant with Bar</p>
+</div>
+</div>
+<div class="col-md-4">
+  <img src="{% static 'images/hotel/free wifi.jpg' %}" height="40" class="img-responsive">
+  <p>Free WiFi</p>
+  <img src="{% static 'images/hotel/laundry.png' %}" height="40" class="img-responsive">
+  <p>Laundry</p>
+</div>
+<div class="col-md-4">
+  <img src="{% static 'images/hotel/swimming pool.png' %}" height="40" class="img-responsive">
+  <p>Swimming Pool</p>
+  <img src="{% static 'images/hotel/payment.png' %}" height="40" class="img-responsive">
+  <p>Payment on check-out if passport is deposited (cash only)</p>
+</div>
 
 {% endblock %}
