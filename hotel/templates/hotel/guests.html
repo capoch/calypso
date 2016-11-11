@@ -1,0 +1,66 @@
+{% extends 'hotel/base.html' %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+      <li><a href="{% url 'service' %}">Service</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'about' %}">About</a></li>
+      {% if user.is_authenticated %}
+      <li class="active"><a href="{% url 'guests' %}">Guests</a></li>
+      <li><a href="{% url 'open_orders' %}">Orders</a></li>
+      {% endif %}
+
+    </ul>
+  </div>
+</nav>
+<div class="col-md-8 col-xs-12">
+<a href="{% url 'register_guest' %}"><h3>Register New Guest</h3></a>
+
+<h2>Guests:</h2>
+<div class="guests">
+<table class="table table-condensed">
+    <tr>
+        <th>Room</th>
+        <th>Name</th>
+        <th>Checkin</th>
+        <th>Checkout</th>
+        <th></th>
+    </tr>
+
+{% for Guest in active %}
+<tr>
+    <td>{{ Guest.room }}</td>
+    <td><a href="{% url 'guest_detail' pk=Guest.pk %}">{{ Guest.name }}</a></td>
+    <td>{{ Guest.checkin_date }}</td>
+    <td>{{ Guest.checkout_date }}</td>
+    <td><a href="#">order</a></td>
+</tr>
+{% endfor %}
+</table>
+</div>
+<h2>Reservations:</h2>
+<div class="guests">
+<table class="table table-condensed">
+    <tr>
+        <th>Room</th>
+        <th>Name</th>
+        <th>Checkin</th>
+        <th>Checkout</th>
+    </tr>
+
+{% for Guest in reservation %}
+<tr>
+    <td>{{ Guest.room }}</td>
+    <td><a href="{% url 'guest_detail' pk=Guest.pk %}">{{ Guest.name }}</a></td>
+    <td>{{ Guest.checkin_date }}</td>
+    <td>{{ Guest.checkout_date }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+{% endblock %}

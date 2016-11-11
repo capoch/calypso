@@ -1,0 +1,103 @@
+{% extends "hotel/base.html" %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+      <li><a href="{% url 'service' %}">Service</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'about' %}">About</a></li>
+      <li class="active"><a href="{% url 'guests' %}">Guests</a></li>
+      <li><a href="{% url 'open_orders' %}">Orders</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="col-md-8 col-xs-12">
+  <h3>Guest Information:</h3>
+  <form method="POST" class="post-form">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="save-guest btn btn-default">Save</button>
+  </form>
+  <h3>Room:</h3>
+    <table class="table table-condensed table-guest-order">
+      <tr>
+        <th>Room</th>
+        <th>From</th>
+        <th>To</th>
+        <th>Price</th>
+        <th><th>
+      </tr>
+     <tr>
+        <td>{{ room.room }}</td>
+        <td>{{ room.date_from }}</td>
+        <td>{{ room.date_to }}</td>
+        <td>{{ room.price }}</td>
+     </tr>
+   </table>
+  <h3>Open orders:</h3>
+  <table class="table table-condensed table-guest-order">
+    <tr>
+      <th>Date</th>
+      <th>Amount</th>
+      <th>Item</th>
+      <th>Price</th>
+      <th><th>
+    </tr>
+   {% for order in open_orders %}
+   <tr>
+      <td>{{ order.date }}</td>
+      <td>{{ order.amount }}</td>
+      <td>{{ order.item }}</td>
+      <td>{{ order.price }}</td>
+      <td><a href="{% url 'pay_order' pk=order.pk go=order.guest.pk %}">pay</a></td>
+   </tr>
+   {% endfor %}
+   <tr>
+   <tr>
+     <td>Total</td>
+     <td></td>
+     <td></td>
+     <td>{{ unpaid_total.price__sum }}</td>
+     <td><a href="{% url 'pay_total' go=unpaid_guest %}">pay total</a></td>
+   <tr>
+ </table>
+ <h3>Paid orders:</h3>
+ <table class="table table-condensed table-guest-order">
+   <tr>
+     <th>Date</th>
+     <th>Amount</th>
+     <th>Item</th>
+     <th>Price</th>
+     <th>Date Paid</th>
+   </tr>
+  {% for order in paid_orders %}
+  <tr>
+     <td>{{ order.date }}</td>
+     <td>{{ order.amount }}</td>
+     <td>{{ order.item }}</td>
+     <td>{{ order.price }}</td>
+     <td>{{ order.paid_date}}</td>
+  </tr>
+  {% endfor %}
+</table>
+<table class="table table-condensed table-guest-order">
+  <tr>
+    <th>Date</th>
+    <th>Amount</th>
+    <th>Item</th>
+    <th>Price</th>
+  </tr>
+{% for order in  open_bill %}
+<tr>
+   <td>{{ order.date }}</td>
+   <td>{{ order.amount }}</td>
+   <td>{{ order.item }}</td>
+   <td>{{ order.price }}</td>
+   <td>{{ order.paid_date}}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+{% endblock %}

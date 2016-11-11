@@ -18,7 +18,7 @@
         {% if user.is_authenticated %}
         <p class="top-menu">Hello {{ user.username }}<small>(<a href="{% url 'logout' %}"> Log out </a>)</small></p>
         {% else %}
-        <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
+        <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock lock"></span></a>
         {% endif %}
         <h1><a href="/">Calypso</a></h1>
     </div>
@@ -28,7 +28,8 @@
                 {% block content %} {% endblock %}
         </div>
     </div>
-    <div class="hidden-xs">
+    <div class="clear"></div>
+    <div class="footer">
     <footer class="footer">
       <div class="container">
         <p>Calypso Resort</p>
@@ -36,7 +37,8 @@
         <p>Tel: 09093934393403 Mail:sfasdf</p>
       </div>
     </footer>
-  </div>
+    </div>
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

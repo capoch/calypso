@@ -1,0 +1,50 @@
+{% extends 'hotel/base.html' %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+      <li><a href="{% url 'service' %}">Service</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'about' %}">About</a></li>
+      {% if user.is_authenticated %}
+      <li><a href="{% url 'guests' %}">Guests</a></li>
+      <li class="active"><a href="{% url 'open_orders' %}">Orders</a></li>
+      {% endif %}
+
+    </ul>
+  </div>
+</nav>
+<div class="col-md-8 col-xs-12">
+<a href="{% url 'new_order' %}"><h3>New Order</h3></a>
+
+<h2>Unpaid Orders:</h2>
+<table class="table table-condensed table_orders">
+    <tr>
+        <th>Amount</th>
+        <th>Guest</th>
+        <th>Item</th>
+        <th>Price</th>
+        <th></th>
+    </tr>
+
+{% for Order in object_list %}
+<tr>
+    <td>{{ Order.amount }}</td>
+    <td><a href="{% url 'guest_detail' pk=Order.guest.pk %}">{{ Order.guest }}</td>
+    <td>{{ Order.item }}</td>
+    <td>{{ Order.price }}</td>
+    <td><td>
+
+</tr>
+
+{% endfor %}
+</table>
+</div>
+
+</div>
+
+
+{% endblock %}

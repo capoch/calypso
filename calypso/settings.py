@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'hotel',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -48,6 +49,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+
 ]
 
 ROOT_URLCONF = 'calypso.urls'
@@ -125,7 +128,7 @@ MEDIA_URL = '/static/images/'
 MEDIA_ROOT = os.path.join('static', 'images')
 
 LOGIN_REDIRECT_URL = '/'
-
+INTERNAL_IPS = '127.0.0.1'
 
 ## Email Mockup to Console
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

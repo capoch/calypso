@@ -1,6 +1,4 @@
-{% extends 'hotel/base.html' %}
-
-{% block title %}Contact - {{ block.super }}{% endblock %}
+{% extends "hotel/base.html" %}
 
 {% block content %}
 <nav class="navbar navbar-default">
@@ -9,22 +7,23 @@
       <li><a href="{% url 'home' %}">Home</a></li>
       <li><a href="{% url 'rooms' %}">Rooms</a></li>
       <li><a href="{% url 'service' %}">Service</a></li>
-      <li class="active"><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
       <li><a href="{% url 'about' %}">About</a></li>
       {% if user.is_authenticated %}
       <li><a href="{% url 'guests' %}">Guests</a></li>
-      <li><a href="{% url 'open_orders' %}">Orders</a></li>
+      <li class="active"><a href="{% url 'open_orders' %}">Orders</a></li>
       {% endif %}
 
     </ul>
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
-<h1>Contact</h1>
-<form role="form" action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
+    <h3>Order Information:</h3>
+    <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
 </div>
+
+<h3><a href="{% url 'open_orders' %}">Order List</a></h3>
 {% endblock %}
