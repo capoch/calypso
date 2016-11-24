@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 import datetime
+from model_utils import FieldTracker
+
 
 class GuestManager(models.Manager):
     def active(self):
@@ -29,7 +31,7 @@ class Motorcycle(models.Model):
     registration =  models.CharField(max_length=100)
     notes = models.TextField(blank=True, null=True)
     date_from = models.DateField()
-    date_to = models.DateField(null=True)
+    date_to = models.DateField(null=True, blank=True)
 
 
     def __str__(self):
@@ -60,6 +62,7 @@ class Guest(models.Model):
     is_guest = models.BooleanField('public', default=True)
     motorcycle = models.ForeignKey('hotel.Motorcycle', on_delete=models.CASCADE, related_name='Guest', blank=True, null=True)
     room = models.ForeignKey('hotel.Room', on_delete=models.CASCADE, related_name='Guest')
+    discount = models.FloatField(default=0, verbose_name='Discount in %')
 
     class Meta:
         ordering = ['room']
@@ -68,6 +71,9 @@ class Guest(models.Model):
 
     def __str__(self):
         return "{} in {}".format(self.name, self.room)
+
+    checkout_tracker = FieldTracker(fields=['checkout_date'])
+
 
 class Item(models.Model):
     GROUPS = (
@@ -84,6 +90,7 @@ class Item(models.Model):
         ('11', 'Potato'),
         ('12', 'Pasta'),
         ('13', 'Pork Tenderloin'),
+        ('98', 'Room'),
     )
     name = models.CharField(max_length=250)
     group = models.CharField(max_length=2, choices=GROUPS)
@@ -115,11 +122,30 @@ class RoomItem(models.Model):
      guest = models.ForeignKey('hotel.Guest', on_delete=models.CASCADE)
      room = models.ForeignKey('hotel.Room', on_delete=models.CASCADE)
      date_from = models.DateField()
-     date_to = models.DateField()
-     price = models.IntegerField()
+     date_to = models.DateField(null=True)
+     days_paid = models.IntegerField(default=0)
+     price = models.IntegerField(null=True)
 
      class Meta:
          ordering = ['room']
 
      def __str__(self):
-         return "Room:{}, Guest:{} from {} until {}".format(self.Room.number, self.Guest.name, self.date_from, self.date_to)
+         return "Room:{}, Guest:{} from {} until {}".format(self.room, self.guest, self.date_from, self.date_to)
+
+class Occupation(models.Model):
+    room = models.ForeignKey('hotel.Room', on_delete=models.CASCADE)
+    date = models.DateField()
+    is_occupaid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{} for Room {}".format(self.date, self.room)
+
+class StockItem(models.Model):
+    item = models.ForeignKey('hotel.Item', on_delete=models.CASCADE)
+    in_stock = models.IntegerField()
+    daily_use_avg = models.FloatField()
+    last_buy = models.DateField()
+    warning = models.BooleanField(default=False)
+
+    def __str__(self):
+        return "{} of {}".format(self.in_stock, self.item)

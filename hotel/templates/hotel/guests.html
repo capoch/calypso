@@ -9,12 +9,20 @@
       <li><a href="{% url 'service' %}">Service</a></li>
       <li><a href="{% url 'contact' %}">Contact</a></li>
       <li><a href="{% url 'about' %}">About</a></li>
-      {% if user.is_authenticated %}
-      <li class="active"><a href="{% url 'guests' %}">Guests</a></li>
-      <li><a href="{% url 'open_orders' %}">Orders</a></li>
-      {% endif %}
-
     </ul>
+    {% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'room_overview' year='2016' month='11' %}">Room Overview</a></li>
+          <li><a href="{% url 'guests' %}">Guests</a></li>
+          <li><a href="{% url 'open_orders' %}">Orders</a></li>
+          <li><a href="{% url 'inventory' %}">Inventory</a></li>
+        </ul>
+      </li>
+    </ul>
+    {% endif %}
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
@@ -37,7 +45,7 @@
     <td><a href="{% url 'guest_detail' pk=Guest.pk %}">{{ Guest.name }}</a></td>
     <td>{{ Guest.checkin_date }}</td>
     <td>{{ Guest.checkout_date }}</td>
-    <td><a href="#">order</a></td>
+    <td><a href="{% url 'new_guest_order' go=Guest.pk %}">order</a></td>
 </tr>
 {% endfor %}
 </table>
@@ -51,7 +59,6 @@
         <th>Checkin</th>
         <th>Checkout</th>
     </tr>
-
 {% for Guest in reservation %}
 <tr>
     <td>{{ Guest.room }}</td>

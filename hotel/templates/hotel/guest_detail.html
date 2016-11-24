@@ -1,5 +1,5 @@
 {% extends "hotel/base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -9,33 +9,77 @@
       <li><a href="{% url 'service' %}">Service</a></li>
       <li><a href="{% url 'contact' %}">Contact</a></li>
       <li><a href="{% url 'about' %}">About</a></li>
-      <li class="active"><a href="{% url 'guests' %}">Guests</a></li>
-      <li><a href="{% url 'open_orders' %}">Orders</a></li>
     </ul>
+    {% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'room_overview' year='2016' month='11' %}">Room Overview</a></li>
+          <li><a href="{% url 'guests' %}">Guests</a></li>
+          <li><a href="{% url 'open_orders' %}">Orders</a></li>
+          <li><a href="{% url 'inventory' %}">Inventory</a></li>
+        </ul>
+      </li>
+    </ul>
+    {% endif %}
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
   <h3>Guest Information:</h3>
+  <a href="#bill">to bill</a>
   <form method="POST" class="post-form">{% csrf_token %}
-    {{ form.as_p }}
+    {{ form|crispy }}
     <button type="submit" class="save-guest btn btn-default">Save</button>
   </form>
   <h3>Room:</h3>
-    <table class="table table-condensed table-guest-order">
+    <table class="table table-condensed table-guest-room">
       <tr>
         <th>Room</th>
         <th>From</th>
         <th>To</th>
-        <th>Price</th>
-        <th><th>
+        <th>Days Total</th>
+        <th>Days Paid<th>
+        <th>Outstanding</th>
+        <th> <th>
       </tr>
      <tr>
         <td>{{ room.room }}</td>
         <td>{{ room.date_from }}</td>
         <td>{{ room.date_to }}</td>
+        <td>{{ room.delta }}</td>
+        <td>{{ room.days_paid }}
         <td>{{ room.price }}</td>
+        <td><a href="{% url 'pay_room' room.guest.pk %}" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">pay room</a></td>
      </tr>
    </table>
+   <h3>Open Bill:</h3>
+   <table class="table table-condensed table-guest-bill" id="bill">
+     <tr>
+       <th>Date</th>
+       <th>Item</th>
+       <th>Amount</th>
+       <th>Price</th>
+       <th></th>
+     </tr>
+    {% for order in open_bill %}
+    <tr>
+       <td>{{ order.date }}</td>
+       <td>{{ order.item }}</td>
+       <td>{{ order.amount }}</td>
+       <td>{{ order.price }}</td>
+       <td></td>
+    </tr>
+    {% endfor %}
+    <tr>
+    <tr>
+      <td>Total</td>
+      <td></td>
+      <td></td>
+      <td>{{ unpaid_total.price__sum }}</td>
+      <td><a href="{% url 'pay_total' go=unpaid_guest %}">pay total</a></td>
+    <tr>
+  </table>
   <h3>Open orders:</h3>
   <table class="table table-condensed table-guest-order">
     <tr>
@@ -64,7 +108,7 @@
    <tr>
  </table>
  <h3>Paid orders:</h3>
- <table class="table table-condensed table-guest-order">
+ <table class="table table-condensed table-guest-paid">
    <tr>
      <th>Date</th>
      <th>Amount</th>
@@ -81,23 +125,6 @@
      <td>{{ order.paid_date}}</td>
   </tr>
   {% endfor %}
-</table>
-<table class="table table-condensed table-guest-order">
-  <tr>
-    <th>Date</th>
-    <th>Amount</th>
-    <th>Item</th>
-    <th>Price</th>
-  </tr>
-{% for order in  open_bill %}
-<tr>
-   <td>{{ order.date }}</td>
-   <td>{{ order.amount }}</td>
-   <td>{{ order.item }}</td>
-   <td>{{ order.price }}</td>
-   <td>{{ order.paid_date}}</td>
-</tr>
-{% endfor %}
 </table>
 </div>
 {% endblock %}

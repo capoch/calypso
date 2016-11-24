@@ -25,7 +25,7 @@ SECRET_KEY = 'nz84kasqutv&1r_$6_9g2uv1ftj+v6w*020$#5-v@+gcaela$+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,9 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+#own
     'hotel',
+#third-party
+    'crispy_forms',
+    'pagedown',
     'debug_toolbar',
 ]
+
+CRISPY_TEMPLATE_PACK = "bootstrap3"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,13 +83,23 @@ WSGI_APPLICATION = 'calypso.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-DATABASES = {
+'''DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
+}'''
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'calypso',
+        'USER': 'philippburri',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators

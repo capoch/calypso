@@ -26,12 +26,10 @@
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
-    <h3>Order Information:</h3>
+    <h3>Pay Room:</h3>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 </div>
-
-<h3><a href="{% url 'open_orders' %}">Order List</a></h3>
 {% endblock %}

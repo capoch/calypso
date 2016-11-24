@@ -1,4 +1,4 @@
-{% extends "hotel/base.html" %}
+{% extends 'hotel/base.html' %}
 
 {% block content %}
 <nav class="navbar navbar-default">
@@ -26,12 +26,53 @@
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
-    <h3>Order Information:</h3>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+<a href="{% url 'new_order' %}"><h3>New Order</h3></a>
+
+<h2>Inventory:</h2>
+<table class="table table-condensed table_stock">
+    <tr>
+        <th>Item</th>
+        <th>in Stock</th>
+        <th>Avg. daily</th>
+        <th>Last Buy</th>
+        <th></th>
+    </tr>
+
+{% for item in stock %}
+<tr>
+    <td>{{ item.item }}</td>
+    <td>{{ item.in_stock }}</td>
+    <td>{{ item.daily_use_avg }}</td>
+    <td>{{ item.last_buy }}</td>
+    <td>
+      {% if item.warning == True %}
+      <span class="glyphicon glyphicon-flash redflash"></span>
+      {% endif %}
+    </td>
+</tr>
+
+{% endfor %}
+</table>
+<h2>Orders Out summarzied:</h2>
+<table class="table table-condensed table_orders">
+    <tr>
+        <th>Date</th>
+        <th>Item</th>
+        <th>Amount</th>
+    </tr>
+
+{% for Order in inventory %}
+<tr>
+    <td>{{ Order.date }}</td>
+    <td>{{ Order.item }}</td>
+    <td>{{ Order.amount }}</td>
+</tr>
+
+{% endfor %}
+</table>
 </div>
 
-<h3><a href="{% url 'open_orders' %}">Order List</a></h3>
+</div>
+
+
 {% endblock %}

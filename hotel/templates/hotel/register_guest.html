@@ -1,4 +1,5 @@
 {% extends "hotel/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 <nav class="navbar navbar-default">
@@ -26,12 +27,10 @@
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
-    <h3>Order Information:</h3>
-    <form method="POST" class="post-form">{% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
-    </form>
+  <h3>Guest Information:</h3>
+  <form method="POST" class="post-form">{% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="save-guest btn btn-default">Save</button>
+  </form>
 </div>
-
-<h3><a href="{% url 'open_orders' %}">Order List</a></h3>
 {% endblock %}

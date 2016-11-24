@@ -57,8 +57,10 @@ $primary_color_contrast: #FFF;
   background: none;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
-  navbar-fnt {
+  navbar-nav {
+    li {
     color: $primary_color_contrast;
+   }
   }
 }
 
@@ -121,4 +123,8 @@ h2, h3, h4 {
 
 .table-guest-order{
   padding-top:30px;
+}
+
+.redflash, .redflash a {
+  color: red;
 }

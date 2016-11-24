@@ -1,0 +1,173 @@
+{% extends 'hotel/base.html' %}
+
+{% block content %}
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <ul class="nav navbar-nav">
+      <li><a href="{% url 'home' %}">Home</a></li>
+      <li><a href="{% url 'rooms' %}">Rooms</a></li>
+      <li><a href="{% url 'service' %}">Service</a></li>
+      <li><a href="{% url 'contact' %}">Contact</a></li>
+      <li><a href="{% url 'about' %}">About</a></li>
+    </ul>
+    {% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown active">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'room_overview' year='2016' month='11' %}">Room Overview</a></li>
+          <li><a href="{% url 'guests' %}">Guests</a></li>
+          <li><a href="{% url 'open_orders' %}">Orders</a></li>
+          <li><a href="{% url 'inventory' %}">Inventory</a></li>
+        </ul>
+      </li>
+    </ul>
+    {% endif %}
+  </div>
+</nav>
+<div class="col-md-12 col-xs-12">
+<a href="{% url 'register_guest' %}"><h3>Register New Guest</h3></a>
+
+<h2>Overview {{month}}/{{year}}:</h2>
+<div class="overview">
+<table class="table table-condensed">
+    <tr>
+        <th>Room</th>
+        {% for day in days %}
+        <th>{{ day }}</th>
+        {% endfor %}
+    </tr>
+
+<tr>
+    <td>Room 1</td>
+    {% for item in room01 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 2</td>
+    {% for item in room02 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 3</td>
+    {% for item in room03 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 4</td>
+    {% for item in room04 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 5</td>
+    {% for item in room05 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 6</td>
+    {% for item in room06 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 7</td>
+    {% for item in room07 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 8</td>
+    {% for item in room08 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Room 9</td>
+    {% for item in room09 %}
+    <td>
+      {% if item == '1' %}
+      <i class="fa fa-square"></i>
+      {% else %}
+      <i class="fa fa-square-o"></i>
+      {% endif %}
+    </td>
+    {% endfor %}
+</tr>
+</table>
+</div>
+
+<h2>Reservations:</h2>
+<div class="guests">
+<table class="table table-condensed">
+    <tr>
+        <th>Room</th>
+        <th>Name</th>
+        <th>Checkin</th>
+        <th>Checkout</th>
+    </tr>
+
+{% for Guest in reservation %}
+<tr>
+    <td>{{ Guest.room }}</td>
+    <td><a href="{% url 'guest_detail' pk=Guest.pk %}">{{ Guest.name }}</a></td>
+    <td>{{ Guest.checkin_date }}</td>
+    <td>{{ Guest.checkout_date }}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+{% endblock %}

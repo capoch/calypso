@@ -9,12 +9,20 @@
       <li><a href="{% url 'service' %}">Service</a></li>
       <li><a href="{% url 'contact' %}">Contact</a></li>
       <li><a href="{% url 'about' %}">About</a></li>
-      {% if user.is_authenticated %}
-      <li><a href="{% url 'guests' %}">Guests</a></li>
-      <li><a href="{% url 'open_orders' %}">Orders</a></li>
-      {% endif %}
-
     </ul>
+    {% if user.is_authenticated %}
+    <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Admin<span class="caret"></span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'room_overview' year='2016' month='11' %}">Room Overview</a></li>
+          <li><a href="{% url 'guests' %}">Guests</a></li>
+          <li><a href="{% url 'open_orders' %}">Orders</a></li>
+          <li><a href="{% url 'inventory' %}">Inventory</a></li>
+        </ul>
+      </li>
+    </ul>
+    {% endif %}
   </div>
 </nav>
 <div class="col-md-8 col-xs-12">
