@@ -21,12 +21,14 @@
           <li><a href="{% url 'guests' %}">Guests</a></li>
           <li><a href="{% url 'open_orders' %}">Orders</a></li>
           <li><a href="{% url 'inventory' %}">Inventory</a></li>
+          <li><a href="{% url 'complaints' %}">Complaints</a></li>
         </ul>
       </li>
     </ul>
     {% endif %}
   </div>
 </nav>
+<div class="page_content">
 <h3>Calypso offers the following services for his beloved guests:</h3>
 <div class="col-md-4">
   <div class="container-fluid">
@@ -47,6 +49,7 @@
   <p>Swimming Pool</p>
   <img src="{% static 'images/hotel/payment.png' %}" height="40" class="img-responsive">
   <p>Payment on check-out if passport is deposited (cash only)</p>
+</div>
 </div>
 
 {% endblock %}

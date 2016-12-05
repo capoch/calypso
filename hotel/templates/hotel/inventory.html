@@ -19,16 +19,17 @@
           <li><a href="{% url 'guests' %}">Guests</a></li>
           <li><a href="{% url 'open_orders' %}">Orders</a></li>
           <li><a href="{% url 'inventory' %}">Inventory</a></li>
+          <li><a href="{% url 'complaints' %}">Complaints</a></li>
         </ul>
       </li>
     </ul>
     {% endif %}
   </div>
 </nav>
+<div class="page_content">
 <div class="col-md-8 col-xs-12">
-<a href="{% url 'new_order' %}"><h3>New Order</h3></a>
 
-<h2>Inventory:</h2>
+<h3>Inventory:</h3>
 <table class="table table-condensed table_stock">
     <tr>
         <th>Item</th>
@@ -45,15 +46,17 @@
     <td>{{ item.daily_use_avg }}</td>
     <td>{{ item.last_buy }}</td>
     <td>
-      {% if item.warning == True %}
-      <span class="glyphicon glyphicon-flash redflash"></span>
+      {% if item.warning == 2 %}
+      <span class="glyphicon glyphicon-flash" id="redflash"></span>
+      {% elif item.warning == 1 %}
+      <span class="glyphicon glyphicon-flash"></span>
       {% endif %}
     </td>
 </tr>
 
 {% endfor %}
 </table>
-<h2>Orders Out summarzied:</h2>
+<h3>Orders Out summarzied:</h3>
 <table class="table table-condensed table_orders">
     <tr>
         <th>Date</th>

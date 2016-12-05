@@ -6,7 +6,7 @@ from model_utils import FieldTracker
 
 class GuestManager(models.Manager):
     def active(self):
-        return self.get_queryset().filter(checkin_date__isnull = False).exclude(checkout_date__lte = timezone.now())
+        return self.get_queryset().filter(checkin_date__lte = timezone.now()).exclude(checkout_date__lte = timezone.now())
     def future(self):
         return self.get_queryset().filter(checkin_date__gt = timezone.now())
 
@@ -48,13 +48,8 @@ class Room(models.Model):
 
 class Guest(models.Model):
 
-    GENDER = (
-        ('M', 'Male'),
-        ('F', 'Female'),
-    )
     checkin_date = models.DateField(name="checkin_date")
     checkout_date = models.DateField(blank=True, null=True, name="checkout_date")
-    gender = models.CharField(max_length=1, choices=GENDER)
     name = models.CharField(max_length=50)
     email = models.EmailField(max_length=255)
     passport_number = models.CharField(max_length=20)
@@ -70,7 +65,7 @@ class Guest(models.Model):
     objects = GuestManager()
 
     def __str__(self):
-        return "{} in {}".format(self.name, self.room)
+        return self.name
 
     checkout_tracker = FieldTracker(fields=['checkout_date'])
 
@@ -111,9 +106,10 @@ class Order(models.Model):
     price = models.IntegerField(default=1)
     is_paid = models.BooleanField(default=False)
     paid_date = models.DateField(blank=True, null=True)
+    timestamp = models.DateField(auto_now_add=True)
 
     class Meta:
-        ordering = ['guest']
+        ordering = ['-timestamp']
 
     def __str__(self):
         return "{} x {}".format(self.amount, self.item)
@@ -130,10 +126,11 @@ class RoomItem(models.Model):
          ordering = ['room']
 
      def __str__(self):
-         return "Room:{}, Guest:{} from {} until {}".format(self.room, self.guest, self.date_from, self.date_to)
+         return "{} in {} from {} until {}".format(self.guest, self.room, self.date_from, self.date_to)
 
 class Occupation(models.Model):
     room = models.ForeignKey('hotel.Room', on_delete=models.CASCADE)
+    #maybe quest belongs in here too
     date = models.DateField()
     is_occupaid = models.BooleanField(default=False)
 
@@ -145,7 +142,43 @@ class StockItem(models.Model):
     in_stock = models.IntegerField()
     daily_use_avg = models.FloatField()
     last_buy = models.DateField()
-    warning = models.BooleanField(default=False)
+    warning = models.IntegerField(default=0)
 
     def __str__(self):
         return "{} of {}".format(self.in_stock, self.item)
+
+class Complaint(models.Model):
+    SEVERITY = (
+        ('00', 'note'),
+        ('01', 'low'),
+        ('02', 'medium'),
+        ('03', 'high'),
+    )
+    CATEGORY = (
+        ('00', 'general'),
+        ('01', 'sanitary'),
+        ('02', 'electric'),
+        ('03', 'windows/doors'),
+        ('04', 'animals')
+    )
+    room = models.ForeignKey('hotel.Room', on_delete=models.CASCADE)
+    date_reported = models.DateField()
+    date_fixed = models.DateField(blank=True, null=True)
+    responsible = models.ForeignKey('hotel.Employee')
+    severity = models.CharField(max_length=2, choices=SEVERITY)
+    category = models.CharField(max_length=2, choices=CATEGORY)
+    comments = models.CharField(max_length=250)
+
+class Employee(models.Model):
+    LEVEL = (
+        ('00', 'Owner'),
+        ('01', 'Management'),
+        ('02', 'Staff'),
+        ('03', 'External'),
+    )
+    name = models.CharField(max_length=30)
+    level = models.CharField(max_length=2, choices=LEVEL)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "{}({})".format(self.name, self.level)

@@ -11,7 +11,7 @@
     <link href="//fonts.googleapis.com/css?family=Old+Standard+TT" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Raleway" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'css/calypso.css' %}">
+    <link href="{% static 'css/calypso.css' %}" rel="stylesheet" type="text/css">
 </head>
 
 <body>
@@ -21,7 +21,9 @@
         {% else %}
         <a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock lock"></span></a>
         {% endif %}
-        <h1><a href="/">Calypso</a></h1>
+        <div class="logo">
+          <img src="{% static 'images/hotel/logo_draft.png' %}" class="img-responsive">
+        </div>
     </div>
 
     <div class="content container-fluid">
@@ -29,16 +31,16 @@
                 {% block content %} {% endblock %}
         </div>
     </div>
-    <div class="clear"></div>
+<!--    <div class="clear"></div>
     <div class="footer">
     <footer class="footer">
       <div class="container">
         <p>Calypso Resort</p>
         <p>Danao Beach, Panglao, 6340 Bohol</p>
-        <p>Tel: 09093934393403 Mail:sfasdf</p>
+        <p>Tel: +63 (0)918 730 2902 &nbsp; Mail:philippinescalypso@yahoo.com</p>
       </div>
     </footer>
-    </div>
+  </div>-->
 
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

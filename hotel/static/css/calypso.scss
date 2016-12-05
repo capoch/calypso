@@ -1,11 +1,11 @@
 $font_title: Raleway;
 $font_footer: Old Standard TT;
-$primary_color: rgba(88, 40, 67, 0.95);
-$primary_color_opaque: rrgba(88, 40, 67, 1);
+$primary_color: rgba(139, 26, 26, 0.95);
+$primary_color_opaque: rgba(139, 26, 26, 1);
 $primary_color_contrast: #FFF;
 
 .page-header {
-    margin: 0; padding: 20px 20px 20px 40px; border: 0;
+    margin: 0; padding: 20px 20px 20px 20px; border: 0;
 
 
     h1, h1 a, h1 a:visited, h1 a:active{
@@ -85,6 +85,12 @@ $primary_color_contrast: #FFF;
 
     margin-left: 0px;
 }
+
+.page_content {
+
+  margin-left:5px;
+}
+
 .content h1{
 
   color: $primary_color_opaque;
@@ -125,6 +131,16 @@ h2, h3, h4 {
   padding-top:30px;
 }
 
-.redflash, .redflash a {
-  color: red;
+#redflash {
+    color: red !important;
+  }
+
+.modal-dialog{
+  height: 200px !important;
+  z-index: 10 !important;
+}
+
+#infoform{
+  border:1px;
+  border-color: $primary_color;
 }

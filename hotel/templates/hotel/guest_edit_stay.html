@@ -1,5 +1,5 @@
-{% extends 'hotel/base.html' %}
-
+{% extends "hotel/base.html" %}
+{% load crispy_forms_tags %}
 {% block content %}
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -27,32 +27,12 @@
   </div>
 </nav>
 <div class="page_content">
-<div class="col-md-8 col-xs-12">
-
-<h3>Unpaid Orders(<a href="{% url 'new_order' %}">new</a>):</h3>
-<table class="table table-condensed table_orders">
-    <tr>
-        <th>Date</th>
-        <th>Amount</th>
-        <th>Guest</th>
-        <th>Item</th>
-        <th>Price</th>
-    </tr>
-
-{% for Order in object_list %}
-<tr>
-    <td>{{ Order.date }}</td>
-    <td>{{ Order.amount }}</td>
-    <td><a href="{% url 'guest_detail' pk=Order.guest.pk %}">{{ Order.guest }}</td>
-    <td>{{ Order.item }}</td>
-    <td>{{ Order.price }}</td>
-</tr>
-
-{% endfor %}
-</table>
+<div class="col-md-5 col-xs-5 infoform">
+  <h3>Guest Information:</h3>
+  <form method="POST" class="post-form">{% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="save-guest btn btn-default">Save</button>
+  </form>
 </div>
-
 </div>
-
-
 {% endblock %}

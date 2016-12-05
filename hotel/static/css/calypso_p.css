@@ -1,9 +1,9 @@
 .page-header {
   margin: 0;
-  padding: 20px 20px 20px 20px;
+  padding: 20px 20px 20px 40px;
   border: 0; }
   .page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
-    color: rgba(139, 26, 26, 0.95);
+    color: rgba(88, 40, 67, 0.95);
     font-size: 36pt;
     text-decoration: none; }
 
@@ -16,7 +16,7 @@
   padding: 5px 20px 5px 0px;
   border: 0;
   color: #FFF;
-  background-color: rgba(139, 26, 26, 0.95);
+  background-color: rgba(88, 40, 67, 0.95);
   position: fixed;
   clear: both;
   bottom: 0;
@@ -30,14 +30,14 @@
     text-decoration: none; }
 
 .lock {
-  color: rgba(139, 26, 26, 0.95); }
+  color: rgba(88, 40, 67, 0.95); }
 
 .save-guest {
   position: static;
   top: 320px;
   left: 300px; }
   .save-guest .btn {
-    background-color: rgba(139, 26, 26, 0.95);
+    background-color: rgba(88, 40, 67, 0.95);
     color: #FFF; }
 
 .navbar {
@@ -49,7 +49,7 @@
     color: #FFF; }
 
 .navbar {
-  background-color: rgba(139, 26, 26, 0.95); }
+  background-color: rgba(88, 40, 67, 0.95); }
 
 .background_home {
   margin-left: 0px; }
@@ -63,11 +63,8 @@
 .content {
   margin-left: 0px; }
 
-.page_content {
-  margin-left: 5px; }
-
 .content h1 {
-  color: #8b1a1a; }
+  color: rrgba(88, 40, 67, 1); }
 
 h1 {
   font-family: Raleway, cursive; }
@@ -88,21 +85,10 @@ h2, h3, h4 {
   margin-right: 20px; }
 
 .room_name {
-  background-color: rgba(139, 26, 26, 0.95);
+  background-color: rgba(88, 40, 67, 0.95);
   color: #FFF; }
 
 .table-guest-order {
   padding-top: 30px; }
-
-#redflash {
-  color: red !important; }
-
-.modal-dialog {
-  height: 200px !important;
-  z-index: 10 !important; }
-
-#infoform {
-  border: 1px;
-  border-color: rgba(139, 26, 26, 0.95); }
 
 /*# sourceMappingURL=calypso.css.map */

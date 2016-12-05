@@ -29,30 +29,31 @@
 <div class="page_content">
 <div class="col-md-8 col-xs-12">
 
-<h3>Unpaid Orders(<a href="{% url 'new_order' %}">new</a>):</h3>
-<table class="table table-condensed table_orders">
+<h3>Complaints(<a href="{% url 'register_complaint' %}">New</a>):</h3>
+<div class="complaints">
+<table class="table table-condensed">
     <tr>
+        <th>Room</th>
         <th>Date</th>
-        <th>Amount</th>
-        <th>Guest</th>
-        <th>Item</th>
-        <th>Price</th>
+        <th>Severity</th>
+        <th>Category</th>
+        <th>Responsible</th>
+        <th>Comments</th>
     </tr>
 
-{% for Order in object_list %}
+{% for complaint in object_list %}
 <tr>
-    <td>{{ Order.date }}</td>
-    <td>{{ Order.amount }}</td>
-    <td><a href="{% url 'guest_detail' pk=Order.guest.pk %}">{{ Order.guest }}</td>
-    <td>{{ Order.item }}</td>
-    <td>{{ Order.price }}</td>
+    <td>{{ complaint.room }}</td>
+    <td>{{ complaint.date_reported }}</td>
+    <td>{{ complaint.get_severity_display }}</td>
+    <td>{{ complaint.get_category_display }}</td>
+    <td>{{ complaint.responsible }}</td>
+    <td>{{ complaint.comments}}</td>
 </tr>
-
 {% endfor %}
 </table>
 </div>
-
 </div>
-
+</div>
 
 {% endblock %}

@@ -19,16 +19,17 @@
           <li><a href="{% url 'guests' %}">Guests</a></li>
           <li><a href="{% url 'open_orders' %}">Orders</a></li>
           <li><a href="{% url 'inventory' %}">Inventory</a></li>
+          <li><a href="{% url 'complaints' %}">Complaints</a></li>
         </ul>
       </li>
     </ul>
     {% endif %}
   </div>
 </nav>
+<div class="page_content">
 <div class="col-md-8 col-xs-12">
-<a href="{% url 'register_guest' %}"><h3>Register New Guest</h3></a>
 
-<h2>Guests:</h2>
+<h3>Guests(<a href="{% url 'register_guest' %}">New</a>):</h3>
 <div class="guests">
 <table class="table table-condensed">
     <tr>
@@ -45,12 +46,25 @@
     <td><a href="{% url 'guest_detail' pk=Guest.pk %}">{{ Guest.name }}</a></td>
     <td>{{ Guest.checkin_date }}</td>
     <td>{{ Guest.checkout_date }}</td>
-    <td><a href="{% url 'new_guest_order' go=Guest.pk %}">order</a></td>
+    <td><a href="{% url 'new_guest_order' pk=Guest.pk %}" data-toggle="modal" data-target="#ordermodal">order</a></td>
 </tr>
 {% endfor %}
 </table>
 </div>
-<h2>Reservations:</h2>
+<div class="modal fade" id="ordermodal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Order</h3>
+      </div>
+      <div class="modal-body">
+        <p>content</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h3>Reservations:</h3>
 <div class="guests">
 <table class="table table-condensed">
     <tr>
@@ -70,4 +84,6 @@
 </table>
 </div>
 </div>
+</div>
+
 {% endblock %}

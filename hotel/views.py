@@ -1,8 +1,8 @@
 import random
 from django.shortcuts import render, render_to_response, redirect, get_object_or_404
 from django.views.generic import ListView
-from hotel.models import RoomType, Guest, Order, RoomItem, Item, StockItem, Room, Occupation
-from .forms import ContactForm, RegisterGuestForm, OrderForm, PayRoomForm
+from hotel.models import RoomType, Guest, Order, RoomItem, Item, StockItem, Room, Occupation, Complaint, Employee
+from .forms import ContactForm, RegisterGuestForm, OrderForm, PayRoomForm, RegisterComplaintForm, EditRoomDetailForm, GuestOrderForm
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context, loader
@@ -13,13 +13,16 @@ from datetime import date, timedelta
 
 
 def home(request):
-    return render_to_response('hotel/home.html')
+    context={}
+    return render(request, 'hotel/home.html', context)
 
 def about(request):
-    return render_to_response('hotel/about.html')
+    context={}
+    return render(request, 'hotel/about.html', context)
 
 def service(request):
-    return render_to_response('hotel/service.html')
+    context={}
+    return render(request, 'hotel/service.html', context)
 
 class ListRoomsView(ListView):
 
@@ -36,6 +39,7 @@ class ListGuestsView(ListView):
         # Add in a QuerySet of all the books
         context['active'] = Guest.objects.active()
         context['reservation'] = Guest.objects.future()
+        print(context)
         return context
 
     template_name = 'hotel/guests.html'
@@ -51,6 +55,12 @@ class ListOrdersView(ListView):
     model = Order
     queryset = Order.objects.filter(is_paid = False)
     template_name = 'hotel/open_orders.html'
+
+class ListComplaintsView(ListView):
+
+    model = Complaint
+    queryset = Complaint.objects.all()
+    template_name = 'hotel/complaints.html'
 
 class ListGuestOrdersView(ListView):
 
@@ -116,7 +126,7 @@ def register_guest(request):
             room_item.save()
             if guest.checkout_date:
                 delta = guest.checkout_date - guest.checkin_date
-                for i in range(delta.da):
+                for i in range(delta.days):
                     dt = guest.checkin_date + timedelta(days=i)
                     occ = Occupation(room = guest.room, date = dt, is_occupaid = True)
                     occ.save()
@@ -136,7 +146,7 @@ def register_guest(request):
 def guest_detail(request, pk):
     guest = get_object_or_404(Guest, pk=pk)
     old_checkout = guest.checkout_tracker.previous('checkout_date')
-# Order Management:
+    # Order Management:
     open_orders = Order.objects.filter(guest = guest, is_paid=False)
     item_dates = open_orders.values('date')
     item_date = item_dates.order_by('date').distinct('date')
@@ -153,7 +163,7 @@ def guest_detail(request, pk):
     unpaid_total = open_orders.aggregate(Sum('price', output_field=IntegerField()))
     unpaid_guest = guest.pk
     paid_orders = Order.objects.filter(guest = guest, is_paid=True)
-# Room Details
+    # Room Details
     room = RoomItem.objects.get(guest = guest)
     room.room = guest.room
     if guest.checkout_date:
@@ -166,45 +176,13 @@ def guest_detail(request, pk):
 
     room.price = (delta.days - room.days_paid) * guest.room.room_type.price * (1-(guest.discount/100))
     room.save()
-# Occupation Details
-
-# Form and Context data
-    if request.method == "POST":
-        form = RegisterGuestForm(request.POST, instance=guest)
-        if form.is_valid():
-            guest = form.save(commit=False)
-            guest.save()
-            return redirect('guest_detail', pk=guest.pk)
-    else:
-            form = RegisterGuestForm(instance=guest)
-# Occupation Changes
-    print(old_checkout)
-    print(guest.checkout_date)
-
-    if guest.checkout_tracker.changed()==True and old_checkout__isnull == False:
-#Checkout nach hinten
-        if guest.checkout_date > old_checkout:
-            delta = guest.checkout_date - old_checkout
-            for i in range(delta.days + 1):
-                dt = guest.checkout_date + timedelta(days=i)
-                occ = Occupation(room = guest.room, date = dt, is_occupaid = True)
-                occ.save()
-        elif guest.checkout_date < old_checkout:
-            delta = old_checkout - guest.checkout_date
-            for i in range(delta.days + 1):
-                dt = old_checkout + timedelta(days=i)
-                occ = Occupation.objects.get(room = guest.room, date = dt, is_occupaid = True)
-                occ.delete()
-# Nachträglich checkout gesetzt
-    elif guest.checkout_tracker.changed()==True and old_checkout__isnull == True:
-        delta = guest.checkout_date - guest.checkin_date
-        for i in range(delta.days + 1):
-            dt = guest.checkin_date + timedelta(days=i)
-            occ = Occupation(room = guest.room, date = dt, is_occupaid = True)
-            occ.save()
 
 
-    context = {'form': form}
+
+
+
+
+    context = {'guest': guest}
     context['open_orders'] = open_orders
     context['open_bill'] = open_bill
     context['unpaid_total'] = unpaid_total
@@ -212,9 +190,76 @@ def guest_detail(request, pk):
     context['paid_orders'] = paid_orders
     context['room'] = room
 
-    print(context)
     return render(request, 'hotel/guest_detail.html', context)
 
+@login_required
+def guest_edit(request, pk):
+    guest = get_object_or_404(Guest, pk=pk)
+    # Form and Context data
+    if request.method == "POST":
+        form = RegisterGuestForm(request.POST, instance=guest,checkin_date__disabled=True)
+        form.checkin_date(disabled=True)
+        if form.is_valid():
+            guest = form.save(commit=False)
+            guest.save()
+            return redirect('guest_detail', pk=guest.pk)
+    else:
+            form = RegisterGuestForm(instance=guest)#,checkin_date__disabled=True)
+
+    context = {'form': form}
+
+    return render(request, 'hotel/guest_edit.html', context)
+
+
+@login_required
+def guest_edit_stay(request, pk):
+    guest = get_object_or_404(Guest, pk=pk)
+    room_item = RoomItem.objects.get(date_to__gte = timezone.now().date(), guest=guest)
+    print(room_item)
+    print(request.POST)
+
+
+
+    # Form and Context data
+    if request.method == "POST":
+        form = EditRoomDetailForm(request.POST, instance=room_item)
+        if form.is_valid():
+            print("POST mate")
+            room_item = form.save(commit=False)
+            room_item.save()
+
+            print(room_item.date_to)
+            print(guest.checkout_date)
+
+            if room_item.date_to > guest.checkout_date:
+                delta = room_item.date_to - guest.checkout_date
+                for i in range(delta.days):
+                    dt = guest.checkout_date + timedelta(days=i)
+                    occ = Occupation(room = guest.room, date = dt, is_occupaid = True)
+                    print(occ)
+                    occ.save()
+
+            elif guest.checkout_date > room_item.date_to:
+                delta =  guest.checkout_date - room_item.date_to
+                for i in range(delta.days):
+                    dt = room_item.date_to + timedelta(days=i)
+                    occ = Occupation.objects.get(room = guest.room, date = dt, is_occupaid = True)
+                    occ.delete()
+
+            guest.checkout_date = room_item.date_to
+            guest.save()
+
+            return redirect('guest_detail', pk=guest.pk)
+    else:
+        print("nix POST mate")
+        form = EditRoomDetailForm(instance=room_item)
+
+
+
+
+
+    context = {'form': form}
+    return render(request, 'hotel/guest_edit_stay.html', context)
 
 @login_required
 def register_order(request):
@@ -228,29 +273,40 @@ def register_order(request):
             stock.in_stock -= order.amount
             stock.save()
             #post.published_date = timezone.now()
-            return redirect('new_order')
+            return redirect('guests')
 
     else:
             form = OrderForm()
+
     context = {'form': form}
     return render(request, 'hotel/order.html', context)
 
 
 
 @login_required
-def register_guest_order(request, *args, **kwargs):
+def register_guest_order(request, pk, *args, **kwargs):
+
+    guest = Guest.objects.get(pk=pk)
 
     if request.method == "POST":
-        form = RegisterGuestForm(request.POST, initial={'guest': kwargs['go']})
+        print("POST")
+        form = GuestOrderForm(request.POST)
         if form.is_valid():
-            guest = form.save(commit=False)
-            guest.save()
+            order_save = form.save(commit=False)
+            order = order_save(guest=guest)
+            order.price = order.amount * order.item.price
+            order.save()
+            stock = StockItem.objects.get(item=order.item)
+            stock.in_stock -= order.amount
+            stock.save()
             #post.published_date = timezone.now()
             return redirect('guests')
     else:
-            return redirect ('new_order')
+        print("Nix POST Maserfagger")
+        form = GuestOrderForm()
+
     context = {'form': form}
-    return redirect('guests')
+    return render(request, 'hotel/order.html', context)
 
 
 @login_required
@@ -315,6 +371,31 @@ def pay_room(request, *args, **kwargs):
 def room_overview(request, year, month):
     rooms = Room.objects.all()
     guests = Guest.objects.active()
+    #next and previous month
+    if month=='12':
+        next_month='01'
+        next_year=str(int(year)+1)
+        previous_month=str(int(month)-1)
+        if len(previous_month) == 1:
+            previous_month = '0'+ previous_month
+        previous_year=year
+    elif month == '01':
+        next_month=str(int(month)+1)
+        if len(next_month) == 1:
+            next_month = '0'+ next_month
+        next_year=year
+        previous_month='12'
+        previous_year=str(int(year)-1)
+    else:
+        next_month=str(int(month)+1)
+        if len(next_month) == 1:
+            next_month = '0'+ next_month
+        next_year=year
+        previous_month=str(int(month)-1)
+        if len(previous_month) == 1:
+            previous_month = '0'+ previous_month
+        previous_year=year
+    #occupation calculation
     occupation = Occupation.objects.filter(date__year = year, date__month=month)
     long_month = ['01', '03', '05', '07', '08', '10', '12']
     short_month = ['04','06','09','11']
@@ -412,6 +493,11 @@ def room_overview(request, year, month):
     context['days_int'] = days_int
     context['month'] = month
     context['year'] = year
+    context['next_month']= next_month
+    context['next_year'] = next_year
+    context['previous_month'] = previous_month
+    context['previous_year'] = previous_year
+
     print (context)
 
     return render(request, 'hotel/overview.html', context)
@@ -437,10 +523,24 @@ def inventory(request):
     stock_items = stock.values('item')
     for i in stock_items:
         item = stock.get(item=i['item'])
-        print(item.in_stock)
-        if item.in_stock - (2 * item.daily_use_avg) <=0:
-            item.warning = True
-            item.save()
+        if item.in_stock <= 0:
+            item.warning = 2
+        elif item.in_stock - (2 * item.daily_use_avg) <=0:
+            item.warning = 1
+        print(item.warning)
     context['stock'] = stock
     context['inventory'] = inventory
     return render (request, 'hotel/inventory.html', context)
+
+@login_required
+def register_complaint(request):
+    if request.method == "POST":
+        form = RegisterComplaintForm(request.POST)
+        if form.is_valid():
+            complaint = form.save(commit=False)
+            complaint.save()
+            return redirect('complaints')
+    else:
+            form = RegisterComplaintForm()
+    context = {'form': form}
+    return render(request, 'hotel/register_complaint.html', context)
